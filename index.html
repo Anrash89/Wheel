@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <title>Розыгрыш призов</title>
@@ -16,26 +16,20 @@
   <button id="spin">Крутить</button>
 
   <script>
-    // 1) Получаем chat_id из URL
-    const params = new URLSearchParams(window.location.search);
-    const chat_id = params.get('chat_id');
+    // URL к статическому JSON на GitHub
+    const participantsUrl = 'https://raw.githubusercontent.com/anrash89/Wheel/main/participants.json';
 
-    // 2) Запрашиваем участников
-    fetch(`/participants?chat_id=${chat_id}`)
-      .then(r => r.json())
+    // 1) Загружаем список участников
+    fetch(participantsUrl)
+      .then(response => response.json())
       .then(list => {
         window.participants = list;
         initWheel(list);
+      })
+      .catch(err => {
+        console.error('Ошибка загрузки участников:', err);
+        alert('Не удалось загрузить список участников.');
       });
-
-    // 3) После окончания вращения отправляем winner обратно боту
-    function onFinish(winnerIndex) {
-      const winner_user_id = window.participants[winnerIndex];
-      Telegram.WebApp.sendData(JSON.stringify({ winner_user_id }));
-    }
-
-    // Инициализация Telegram WebApp API
-    window.Telegram.WebApp.ready();
   </script>
 </body>
 </html>
