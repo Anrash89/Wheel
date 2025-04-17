@@ -3,33 +3,68 @@
 <head>
   <meta charset="utf-8">
   <title>Розыгрыш призов</title>
-  <script src="static/wheel.js"></script>
+  <!-- Библиотека для конфетти/фейерверков -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <style>
-    body { text-align: center; font-family: sans-serif; margin-top: 50px; }
-    #canvas { border: 1px solid #ccc; }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #1a1a1a;
+      color: #fff;
+      font-family: sans-serif;
+    }
+    #wheel-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+    }
+    #wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      background: #333;
+    }
+    #pointer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 40px solid #ff5722;
+      transform: translate(-50%, -100%);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+    #spin {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      background: #ff5722;
+      color: #fff;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      transition: background 0.3s;
+    }
+    #spin:hover {
+      background: #e64a19;
+    }
   </style>
 </head>
 <body>
-  <h1>🎡 Крутите барабан!</h1>
-  <canvas id="canvas" width="500" height="500"></canvas>
-  <br>
-  <button id="spin">Крутить</button>
+  <div id="wheel-container">
+    <canvas id="wheel" width="500" height="500"></canvas>
+    <div id="pointer"></div>
+  </div>
+  <button id="spin">Крутить 🎉</button>
 
-  <script>
-    // URL к статическому JSON на GitHub
-    const participantsUrl = 'https://raw.githubusercontent.com/anrash89/Wheel/main/participants.json';
-
-    // 1) Загружаем список участников
-    fetch(participantsUrl)
-      .then(response => response.json())
-      .then(list => {
-        window.participants = list;
-        initWheel(list);
-      })
-      .catch(err => {
-        console.error('Ошибка загрузки участников:', err);
-        alert('Не удалось загрузить список участников.');
-      });
-  </script>
+  <script src="static/wheel.js"></script>
 </body>
 </html>
