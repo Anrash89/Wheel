@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Розыгрыш призов</title>
-  <!-- Библиотека для конфетти/фейерверков -->
+  <!-- Конфетти -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <style>
     body {
@@ -53,7 +53,11 @@
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
       transition: background 0.3s;
     }
-    #spin:hover {
+    #spin:disabled {
+      background: #555;
+      cursor: default;
+    }
+    #spin:hover:not(:disabled) {
       background: #e64a19;
     }
   </style>
@@ -63,8 +67,7 @@
     <canvas id="wheel" width="500" height="500"></canvas>
     <div id="pointer"></div>
   </div>
-  <button id="spin">Крутить 🎉</button>
-
+  <button id="spin" disabled>Загрузка…</button>
   <script src="static/wheel.js"></script>
 </body>
 </html>
