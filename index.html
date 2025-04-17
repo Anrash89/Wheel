@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Розыгрыш призов</title>
+  <script src="static/wheel.js"></script>
+  <style>
+    body { text-align: center; font-family: sans-serif; margin-top: 50px; }
+    #canvas { border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>🎡 Крутите барабан!</h1>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <br>
+  <button id="spin">Крутить</button>
+
+  <script>
+    // 1) Получаем chat_id из URL
+    const params = new URLSearchParams(window.location.search);
+    const chat_id = params.get('chat_id');
+
+    // 2) Запрашиваем участников
+    fetch(`/participants?chat_id=${chat_id}`)
+      .then(r => r.json())
+      .then(list => {
+        window.participants = list;
+        initWheel(list);
+      });
+
+    // 3) После окончания вращения отправляем winner обратно боту
+    function onFinish(winnerIndex) {
+      const winner_user_id = window.participants[winnerIndex];
+      Telegram.WebApp.sendData(JSON.stringify({ winner_user_id }));
+    }
+
+    // Инициализация Telegram WebApp API
+    window.Telegram.WebApp.ready();
+  </script>
+</body>
+</html>
